@@ -21,7 +21,7 @@ begin
   
   process(clk)
   begin
-    if(clk = '0') then
+    if(clk = '1') then
       if(RFLwrite = '1') then
         data(to_integer(unsigned(WP) + unsigned(LA(3 downto 2)))) (7 downto 0) <= inputData (7 downto 0);
       end if;
