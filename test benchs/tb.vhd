@@ -1,6 +1,5 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
 
 entity mux_test is
 end entity;
@@ -27,7 +26,6 @@ end architecture;
 
 library IEEE;
 use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
 
 entity triState_test is
 end entity;
@@ -49,3 +47,24 @@ architecture arch of triState_test is
   begin
     ts : triState port map(input, e, output);
 end architecture;
+
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity SHL_test is
+end entity;
+
+architecture arch of SHL_test is
+  signal input : STD_LOGIC_VECTOR(15 downto 0);
+  signal output : STD_LOGIC_VECTOR(15 downto 0);
+  component SHL is
+	  port(
+		   Rs : in STD_LOGIC_VECTOR (15 downto 0);
+		   output : out STD_LOGIC_VECTOR (15 downto 0)
+		);
+	end component;
+  begin
+    shiftL : SHL port map(input, output);
+end architecture;
+
