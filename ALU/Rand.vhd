@@ -13,8 +13,8 @@ signal inBit : STD_LOGIC := '0';
 begin
   output <= reg;
   
-  inBit <= reg(10) xor reg(12) xor reg(13) xor reg(15) after 10ns;
-  reg <= reg(14 downto 0) & inBit after 10ns;   
+  inBit <= reg(10) xor reg(12) xor reg(13) xor reg(15) after 10 ns;
+  reg <= reg(14 downto 0) & inBit after 10 ns;   
     
 end architecture;
 
