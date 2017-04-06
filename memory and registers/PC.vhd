@@ -10,7 +10,7 @@ port (
   );
 end entity;
 
-architecture dataflow of PC is begin
+architecture PC_ARCH of PC is begin
   process (clk) begin
     if(clk = 
 '1' and EnablePC = '1')

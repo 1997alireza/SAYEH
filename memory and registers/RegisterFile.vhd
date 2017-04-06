@@ -12,7 +12,7 @@ entity registerFile is
     left, right : out STD_LOGIC_VECTOR(15 downto 0) -- left -> Rd, right -> Rs
   );
 end entity;
-architecture behavioral of registerFile is
+architecture registerFile_ARCH of registerFile is
   type reg_64n16b is array (0 to 63) of STD_LOGIC_VECTOR(15 downto 0);
   signal data : reg_64n16b;
 begin

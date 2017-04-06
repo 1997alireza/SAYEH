@@ -7,7 +7,7 @@ entity reg16b is
     output : out STD_LOGIC_VECTOR (15 downto 0) := "0000000000000000"
   );
 end entity;
-architecture behavioral of reg16b is
+architecture reg16b_ARCH of reg16b is
 begin
   process(clk)
   begin

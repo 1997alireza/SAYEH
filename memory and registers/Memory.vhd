@@ -10,7 +10,7 @@ entity memory is
     clk, rwbar : in std_logic
     );
 end entity;
-architecture behavioral of memory is
+architecture memory_ARCH of memory is
 	type mem is array (natural range <>, natural range <>) of std_logic;
 begin
 	process (clk)
@@ -29,4 +29,4 @@ begin
 			end if;
 		end if;
 	end process;
-end architecture behavioral;
+end architecture;

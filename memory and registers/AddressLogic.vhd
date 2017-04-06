@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity AddressLogic is
+entity addressLogic is
    port (
     PCside, Rside : in std_logic_vector (15 downto 0);
     Iside : in std_logic_vector (7 downto 0);
@@ -11,7 +11,7 @@ entity AddressLogic is
 );
 end entity;
 
-architecture dataflow of AddressLogic is
+architecture addressLogic_ARCH of addressLogic is
   constant one : std_logic_vector (4 downto 0) := "10000";
   constant two : std_logic_vector (4 downto 0) := "01000";
   constant three : std_logic_vector (4 downto 0) := "00100";

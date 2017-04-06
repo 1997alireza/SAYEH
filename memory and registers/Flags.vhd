@@ -7,7 +7,7 @@ entity flags is
     Cout, Zout : out STD_LOGIC
   );
 end entity;
-architecture behavioral of flags is
+architecture flags_ARCH of flags is
   component reg is
     port(
       clk, load, set, reset : in STD_LOGIC;

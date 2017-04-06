@@ -8,7 +8,7 @@ entity reg is
     output : out STD_LOGIC := '0'
   );
 end entity;
-architecture behavioral of reg is
+architecture reg_ARCH of reg is
 begin
   process(clk)
   begin

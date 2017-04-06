@@ -10,7 +10,7 @@ entity WP is
     output : out STD_LOGIC_VECTOR (5 downto 0)
   );
 end entity;
-architecture behavioral of WP is
+architecture WP_ARCH of WP is
   signal s : STD_LOGIC_VECTOR(5 downto 0) := "000000" ;
 begin
   output <= s;

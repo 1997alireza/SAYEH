@@ -1,7 +1,7 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 
-entity AddressUnit is
+entity addressUnit is
   port (
     Rside : in std_logic_vector (15 downto 0);
     Iside : in std_logic_vector (7 downto 0);
@@ -11,7 +11,7 @@ entity AddressUnit is
   );
 end entity;
 
-architecture dataflow of AddressUnit is
+architecture addressUnit_ARCH of addressUnit is
   component PC is 
     port (
       EnablePC : in std_logic;
