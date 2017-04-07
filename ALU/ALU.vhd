@@ -7,7 +7,8 @@ port (
     Cout, Zout : in STD_LOGIC;
     Cin, Zin : out STD_LOGIC;
     output : out STD_LOGIC_VECTOR(15 downto 0);   -- to Rd
-    B15to0, AandB, AorB, AxorB, notB, AcmpB, shrB, shlB, AaddB, AsubB, AmulB, tcmpB, rand : in STD_LOGIC   -- number = 12 + 1 (AcmpB haven't access to output)
+    B15to0, AandB, AorB, AxorB, notB, AcmpB, shrB, shlB, AaddB, AsubB, 
+            AmulB, tcmpB, rand : in STD_LOGIC   -- number = 12 + 1 (AcmpB haven't access to output)
   );
 end entity;
 

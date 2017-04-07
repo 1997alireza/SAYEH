@@ -25,14 +25,17 @@ architecture arch of ALU_test is
   signal Rs: STD_LOGIC_VECTOR(15 downto 0) := "1100011001011001";
   signal Rd: STD_LOGIC_VECTOR(15 downto 0) := "0110101010010000";
   signal Cin, Zin, Cout, Zout : STD_LOGIC;
+  signal CReset : STD_LOGIC;
   signal output : STD_LOGIC_VECTOR(15 downto 0);
   signal ONE : STD_LOGIC := '1';
   signal ZERO : STD_LOGIC := '0';
 	
   
   begin
-    CZFlags : flags port map(clk, Cin, Zin, ZERO, ZERO, ZERO, ZERO, ZERO);
-    aluComp : ALU port map (Rs, Rd, Cout, Zout, Cin, Zin, output, ZERO, ONE, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO);
+    clk <= not clk after 50 ns;
+    CReset <= '1' after 10 ns, '0' after 110 ns;
+    CZFlags : flags port map(clk, Cin, Zin, ZERO, CReset, ZERO, ZERO, ZERO, Cout, Zout);
+    aluComp : ALU port map (Rs, Rd, Cout, Zout, Cin, Zin, output, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ONE, ZERO, ZERO, ZERO, ZERO);
 end architecture;
 
 
