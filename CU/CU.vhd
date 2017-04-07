@@ -20,7 +20,7 @@ entity CU is
 		  ResetPC, EnablePC, PCplusI, PCplus1, RplusI, Rplus0,     -- Address Unit
 		  RFLwrite, RFHwrite,                                      -- register file
 		  shadow 
-		        : out STD_LOGIC;
+		        : out STD_LOGIC
 		            
 		);
 
