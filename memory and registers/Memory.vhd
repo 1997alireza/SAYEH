@@ -7,7 +7,7 @@ entity memory is
     address : in std_logic_vector;
     data_in : in std_logic_vector;
     data_out : out std_logic_vector;
-    clk, rwbar : in std_logic
+    clk, rwbar : in std_logic         -- rwbar = read/-write
     );
 end entity;
 architecture memory_ARCH of memory is
