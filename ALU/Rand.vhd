@@ -1,13 +1,13 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 
-entity Rand is
+entity randGen is
 port (
     output: out STD_LOGIC_VECTOR (15 downto 0)   -- to Rd
   );
 end entity;
 
-architecture Rand_ARCH of Rand is 
+architecture randGen_ARCH of randGen is 
 signal reg : STD_LOGIC_VECTOR (15 downto 0) := "1011010011000100";
 signal inBit : STD_LOGIC := '0';
 begin

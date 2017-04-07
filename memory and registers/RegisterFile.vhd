@@ -8,7 +8,7 @@ entity registerFile is
     clk, RFLwrite, RFHwrite : in STD_LOGIC;
     WP : in STD_LOGIC_VECTOR(5 downto 0);
     LA : in STD_LOGIC_VECTOR(3 downto 0); -- Local Address : [1,0]=Rs.Ad , [3,2]=Rd.Ad     -> take from IR
-    inputData : in STD_LOGIC_VECTOR(15 downto 0); -- take from dataBus
+    inputData : in STD_LOGIC_VECTOR(15 downto 0); -- take from dataBus  -- load on Rd
     left, right : out STD_LOGIC_VECTOR(15 downto 0) -- left -> Rd, right -> Rs
   );
 end entity;

@@ -4,14 +4,14 @@ use IEEE.std_logic_1164.all;
 entity CMP is
 port (
     Rs, Rd: in std_logic_vector (15 downto 0);
-    Cout, Zout: out STD_LOGIC
+    c, z: out STD_LOGIC   -- to cIn and zIn
   );
 end entity;
 
 architecture CMP_ARCH of CMP is 
 begin
-  Zout <= '1' when Rs = Rd else '0';
-  Cout <= '1' when Rd < Rs else '0';  
+  z <= '1' when Rs = Rd else '0';
+  c <= '1' when Rd < Rs else '0';  
 end architecture;
 
 
