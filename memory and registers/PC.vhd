@@ -12,9 +12,7 @@ end entity;
 
 architecture PC_ARCH of PC is begin
   process (clk) begin
-    if(clk = 
-'1' and EnablePC = '1')
- then
+    if(clk = '1' and EnablePC = '1') then
       output <= input;
     end if;
   end process;

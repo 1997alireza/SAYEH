@@ -5,7 +5,9 @@ use IEEE.numeric_std.all;
 entity MUL is
 port (
     Rs, Rd: in STD_LOGIC_VECTOR (15 downto 0);
-    output: out STD_LOGIC_VECTOR (15 downto 0)   -- to Rd
+    output: out STD_LOGIC_VECTOR (15 downto 0);   -- to Rd
+    carry : out STD_LOGIC;                        -- to Cin
+    zero : out STD_LOGIC                          -- to Zin
   );
 end entity;
 
