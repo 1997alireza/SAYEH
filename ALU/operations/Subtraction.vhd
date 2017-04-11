@@ -25,8 +25,8 @@ architecture SUB_ARCH of SUB is
 begin
   RsComplement : twosComp port map (Rs, RsComp);
   with c select cComp <=
-       "1111111111111111" when '1',
-       "0000000000000000" when OTHERS;
+       (OTHERS => '1') when '1',
+       (OTHERS => '0') when OTHERS;
   res <= std_logic_vector( unsigned("0" & Rd) + unsigned("0" & RsComp) + unsigned("0" & cComp) );
   output <= res(15 downto 0);
   with res(15 downto 0) select zero <=

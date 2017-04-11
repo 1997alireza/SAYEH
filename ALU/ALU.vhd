@@ -85,7 +85,9 @@ architecture ALU_ARCH of ALU is
 	component MUL is
 	port (
 		Rs, Rd: in STD_LOGIC_VECTOR (15 downto 0);
-		output: out STD_LOGIC_VECTOR (15 downto 0)   -- to Rd
+		output: inout STD_LOGIC_VECTOR (15 downto 0); -- to Rd
+    carry : out STD_LOGIC;                        -- to Cin
+    zero : out STD_LOGIC                          -- to Zin
 	  );
 	end component;
 
@@ -106,7 +108,7 @@ architecture ALU_ARCH of ALU is
   signal and_OUT, or_OUT, xor_OUT, invert_OUT, shr_OUT, shl_OUT, add_OUT, sub_OUT,
              mul_OUT, tcmp_OUT, rand_OUT : STD_LOGIC_VECTOR(15 downto 0);             -- to output
              
-  signal add_CARRY, sub_CARRY, cmp_CARRY, add_ZERO, sub_ZERO, cmp_ZERO : STD_LOGIC;                                  -- to cIn and zIn
+  signal add_CARRY, sub_CARRY, mul_CARRY, cmp_CARRY, add_ZERO, sub_ZERO, mul_ZERO, cmp_ZERO : STD_LOGIC;                                  -- to cIn and zIn
   
   signal selection : STD_LOGIC_VECTOR(11 downto 0);
   
@@ -123,7 +125,7 @@ begin
   shiftLeft : SHL port map (Rs, shl_OUT);
   addition : ADD port map (Rs, Rd, add_OUT, add_CARRY, add_ZERO);
   subtraction : SUB port map (Rs, Rd, Cout, sub_OUT, sub_CARRY, sub_ZERO);
-  multiply : MUL port map (Rs, Rd, mul_OUT);
+  multiply : MUL port map (Rs, Rd, mul_OUT, mul_CARRY, mul_ZERO);
   twosComplement : twosComp port map (Rs, tcmp_OUT);
   randomNumber : randGen port map (rand_OUT);
     
@@ -131,11 +133,13 @@ begin
   cIn <= add_CARRY when AaddB = '1' else
          sub_CARRY when AsubB = '1' else
          cmp_CARRY when AcmpB = '1' else
+         mul_CARRY when AmulB = '1' else
          '0';   -- in this state SRload is zero
          
   zIn <= add_ZERO when AaddB = '1' else
          sub_ZERO when AsubB = '1' else
          cmp_ZERO when AcmpB = '1' else
+         mul_ZERO when AmulB = '1' else
          '0';   -- in this state SRload is zero 
   
   with selection select output <= 
