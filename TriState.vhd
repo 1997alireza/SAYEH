@@ -4,7 +4,7 @@ use IEEE.numeric_std.all;
 
 entity triState is
 	generic(
-		DATA_LENGTH   : integer        -- size of input and output
+		DATA_LENGTH   : integer := 1       -- size of input and output
 	       );
 	port(
 		   input : in STD_LOGIC_VECTOR (DATA_LENGTH - 1 downto 0);

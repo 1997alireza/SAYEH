@@ -9,7 +9,7 @@ entity memory is
 		addressbus: in std_logic_vector (15 downto 0);
 		databus : inout std_logic_vector (15 downto 0);
 		memdataready : out std_logic);
-end entity memory;
+end entity;
 
 architecture behavioral of memory is
 	type mem is array (0 to blocksize - 1) of std_logic_vector (15 downto 0);

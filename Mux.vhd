@@ -4,7 +4,7 @@ use IEEE.numeric_std.all;
 
 entity mux is
 	generic(
-		DATA_LENGTH   : integer        -- size of inputs and output
+		DATA_LENGTH   : integer := 1       -- size of inputs and output
 	       );
 	port(
 		   input1 : in STD_LOGIC_VECTOR (DATA_LENGTH - 1 downto 0);

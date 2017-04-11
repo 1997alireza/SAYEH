@@ -19,6 +19,7 @@ entity CU is
 		  IRload,                                                  -- IR
 		  ResetPC, EnablePC, PCplusI, PCplus1, RplusI, Rplus0,     -- Address Unit
 		  RFLwrite, RFHwrite,                                      -- register file
+		  readMem, writeMem,                                       -- memory
 		  shadow 
 		        : out STD_LOGIC
 		            
