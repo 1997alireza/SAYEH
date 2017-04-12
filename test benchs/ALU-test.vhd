@@ -23,7 +23,7 @@ architecture arch of ALU_test is
   
   signal clk : STD_LOGIC := '0';
   signal Rs: STD_LOGIC_VECTOR(15 downto 0) := "0000011011111110";
-  signal Rd: STD_LOGIC_VECTOR(15 downto 0) := "1000011011101111";
+  signal Rd: STD_LOGIC_VECTOR(15 downto 0) := "0000000111101011";
   signal Cin, Zin, Cout, Zout : STD_LOGIC;
   signal CReset : STD_LOGIC;
   signal output : STD_LOGIC_VECTOR(15 downto 0);
