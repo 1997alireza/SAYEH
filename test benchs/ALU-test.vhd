@@ -34,7 +34,7 @@ architecture arch of ALU_test is
     clk <= not clk after 50 ns;
     CReset <= '1' after 10 ns, '0' after 110 ns;
     CZFlags : flags port map(clk, Cin, Zin, '0', CReset, '0', '0', '0', Cout, Zout);
-    aluComp : ALU port map (Rs, Rd, Cout, Zout, Cin, Zin, output, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0');
+    aluComp : ALU port map (Rs, Rd, Cout, Zout, Cin, Zin, output, '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0');
 end architecture;
 
 

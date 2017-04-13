@@ -66,6 +66,7 @@ architecture ALU_ARCH of ALU is
 	component ADD is
 	port (
 		Rs, Rd : in STD_LOGIC_VECTOR (15 downto 0);
+    c : in STD_LOGIC;                             -- from Cout
 		output : out STD_LOGIC_VECTOR (15 downto 0);  -- to Rd
 		carry : out STD_LOGIC;                        -- to Cin
 		zero : out STD_LOGIC                          -- to Zin
@@ -106,9 +107,9 @@ architecture ALU_ARCH of ALU is
 
 
   signal and_OUT, or_OUT, xor_OUT, invert_OUT, shr_OUT, shl_OUT, add_OUT, sub_OUT,
-             mul_OUT, tcmp_OUT, rand_OUT : STD_LOGIC_VECTOR(15 downto 0);             -- to output
+             mul_OUT, tcmp_OUT, rand_OUT : STD_LOGIC_VECTOR(15 downto 0);                                      -- to output
              
-  signal add_CARRY, sub_CARRY, mul_CARRY, cmp_CARRY, add_ZERO, sub_ZERO, mul_ZERO, cmp_ZERO : STD_LOGIC;                                  -- to cIn and zIn
+  signal add_CARRY, sub_CARRY, mul_CARRY, cmp_CARRY, add_ZERO, sub_ZERO, mul_ZERO, cmp_ZERO : STD_LOGIC;       -- to cIn and zIn
   
   signal selection : STD_LOGIC_VECTOR(11 downto 0);
   
@@ -123,7 +124,7 @@ begin
   comparator : CMP port map (Rs, Rd, cmp_CARRY, cmp_ZERO);
   shiftRight : SHR port map (Rs, shr_OUT);
   shiftLeft : SHL port map (Rs, shl_OUT);
-  addition : ADD port map (Rs, Rd, add_OUT, add_CARRY, add_ZERO);
+  addition : ADD port map (Rs, Rd, Cout, add_OUT, add_CARRY, add_ZERO);
   subtraction : SUB port map (Rs, Rd, Cout, sub_OUT, sub_CARRY, sub_ZERO);
   multiply : MUL port map (Rs, Rd, mul_OUT, mul_CARRY, mul_ZERO);
   twosComplement : twosComp port map (Rs, tcmp_OUT);
