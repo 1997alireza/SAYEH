@@ -21,8 +21,11 @@ begin
 	begin
 		if init = true then
 			-- some initiation
+			buffermem(0) := "0000000000000000";
 			init := false;
 		end if;
+
+		databus <= (others => 'Z');
 
 		if  clk'event and clk = '1' then
 			ad := to_integer(unsigned(addressbus));
