@@ -21,7 +21,27 @@ begin
 	begin
 		if init = true then
 			-- some initiation
-			buffermem(0) := "0000000000000000";
+			-- buffermem(0) := "0000000000000000";
+			
+			-- cwp
+			buffermem(0) := "0000000000000110";
+
+			-- mil r0, 01011101
+			buffermem(1) := "1111000001011101";
+
+			-- mih r0, 00000101
+			buffermem(2) := "1111000100000101";
+
+			-- mil r1, 00000001
+			buffermem(3) := "1111010000000001";
+
+			-- mih r1, 00000000
+			buffermem(4) := "1111010100000000";
+
+			-- add r1, r0
+			buffermem(5) := "0000000010110100";
+			
+			
 			init := false;
 		end if;
 

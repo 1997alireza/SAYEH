@@ -102,7 +102,7 @@ architecture SAYEH_ARCH of SAYEH is
 		  MemDataReady                                             -- memory
 		        : in STD_LOGIC;
 		        
-		  IRout : out STD_LOGIC_VECTOR(15 downto 0);               -- IR 
+		  IRout : in STD_LOGIC_VECTOR(15 downto 0);               -- IR 
 		  
 		  CSet, CReset, ZSet, ZReset, SRload,                      -- flags
 		  B15to0, AandB, AorB, AxorB, notB, AcmpB, shrB,
@@ -121,6 +121,7 @@ architecture SAYEH_ARCH of SAYEH is
 
   end component;
 	
+	signal memClk : STD_LOGIC := '0';
 	signal readMem, writeMem, memDataReady : STD_LOGIC;
 	signal dataBus, addressBus, addressUnitRSideBus : STD_LOGIC_VECTOR(15 downto 0);
 	
@@ -148,7 +149,7 @@ architecture SAYEH_ARCH of SAYEH is
 	
 	
 begin
-  M : memory port map (clk, readMem, writeMem, addressBus, dataBus, memDataReady);
+  M : memory port map (memClk, readMem, writeMem, addressBus, dataBus, memDataReady);
   AU : addressUnit port map (addressUnitRSideBus, IRout(7 downto 0), addressBus, clk, 
                         resetPC, PCplusI, PCplus1, RplusI, Rplus0, enablePC);
   IR : reg16b port map(clk, IRload, '0',  dataBus, IRout);
@@ -190,12 +191,13 @@ begin
   
   
   
-  
+    memClk <= not clk after 40 ns; -- clock cycle is 100 ns => clock changed each 50 ns
   
     
   
   
 end architecture;
+
 
 
 
