@@ -30,10 +30,10 @@ architecture arch of RegisterFile_test is
     RF : registerFile port map (clk, RFLwrite, RFHwrite, WP, selection, data, Rd, Rs);
       
     clk <= not clk after 50 ns;
-    data <= "1010101010101010";
-    RFLwrite <= '0', '1' after 150 ns, '0' after 250 ns;
+    data <= "1010101010101010", (OTHERS => '0') after 350 ns;
+    RFLwrite <= '0', '1' after 150 ns, '0' after 250 ns, '1' after 350 ns;
     RFHwrite <= '0', '1' after 150 ns, '0' after 250 ns;
-    WP <= "000010", "000000" after 250 ns;
+    WP <= "000010";
     selection <= "0001", "0010" after 250 ns;
 end architecture;
 

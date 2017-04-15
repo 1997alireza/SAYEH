@@ -68,3 +68,26 @@ architecture arch of SHL_test is
     shiftL : SHL port map(input, output);
 end architecture;
 
+
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity reg1_test is
+end entity;
+
+architecture arch of reg1_test is
+  signal set, output : STD_LOGIC;
+  signal clk : STD_LOGIC := '0';
+  component reg is
+    port(clk, load, set, reset : in STD_LOGIC;
+      input : in STD_LOGIC;
+      output : out STD_LOGIC := '0'
+    );
+  end component;
+  begin
+    regOne : reg port map(clk, '0', set, '0', '0', output);
+    clk <= not clk after 50 ns;
+    set <= '0', '1' after 10 ns, '0' after 110 ns;
+end architecture;
+
+

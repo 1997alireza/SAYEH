@@ -156,7 +156,7 @@ begin
        mul_OUT           when "000000000100",
        tcmp_OUT          when "000000000010",
        rand_OUT          when "000000000001",
-       (OTHERS => '1')   when OTHERS;   -- shouldn't happen this
+       (OTHERS => '1')   when OTHERS;   -- shouldn't happen this, except when all of ALU controller ports are off
          
   
   

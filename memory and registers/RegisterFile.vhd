@@ -22,11 +22,15 @@ begin
   process(clk)
   begin
     if(clk = '1') then
-      if(RFLwrite = '1') then
+      if(RFLwrite = '1' and RFHwrite = '1') then
         data(to_integer(unsigned(WP) + unsigned(LA(3 downto 2)))) (7 downto 0) <= inputData (7 downto 0);
-      end if;
-      if(RFHwrite = '1') then
         data(to_integer(unsigned(WP) + unsigned(LA(3 downto 2)))) (15 downto 8) <= inputData (15 downto 8);
+        
+      elsif(RFLwrite = '1') then
+        data(to_integer(unsigned(WP) + unsigned(LA(3 downto 2)))) (7 downto 0) <= inputData (7 downto 0);
+      elsif(RFHwrite = '1') then
+        data(to_integer(unsigned(WP) + unsigned(LA(3 downto 2)))) (15 downto 8) <= inputData (7 downto 0);
+            
       end if;
   
     end if;
