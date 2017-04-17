@@ -225,7 +225,6 @@ begin
 			          Address_on_DataBus <= '1';
 			          RFLwrite <= '1';
 			          RFHwrite <= '1';
-			          EnablePC <= '1';
 			          nextState <= PCInc;
 			        when jpa_P22 =>  -- 16bit
 			          RplusI <= '1';
