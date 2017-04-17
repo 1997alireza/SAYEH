@@ -25,29 +25,42 @@ begin
 			
 			-- cwp
 			buffermem(0) := "0000000000000110";
+			
+			-- awp 0
+			buffermem(1) := "0000101000000000";
 
 			-- mil r0, 01011101
-			buffermem(1) := "1111000001011101";
+			buffermem(2) := "1111000001011101";
 
 			-- mih r0, 00000101
-			buffermem(2) := "1111000100000101";
+			buffermem(3) := "1111000100000101";
 
+      -- szf
+      buffermem(4) := "0000000000000010";
+      
+      -- brz 2
+      buffermem(5) := "0000100000000010";
+      
+      -- mih r0, 00000000
+			buffermem(6) := "1111000100000000";
+			
 			-- mil r1, 00000001
-			buffermem(3) := "1111010000000001";
+			buffermem(7) := "1111010000000001";
 
 			-- mih r1, 00000000
-			buffermem(4) := "1111010100000000";
+			buffermem(8) := "1111010100000000";
 
 			-- add r1, r0
-			buffermem(5) := "0000000010110100";
+			buffermem(9) := "0000000010110100";
 			
 			
 			init := false;
 		end if;
 
-		databus <= (others => 'Z');
 
+    
 		if  clk'event and clk = '1' then
+		  databus <= (others => 'Z');
 			ad := to_integer(unsigned(addressbus));
 
 			if readmem = '1' then -- Readiing :)
