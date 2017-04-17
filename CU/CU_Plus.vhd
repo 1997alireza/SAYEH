@@ -1,7 +1,7 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 
-entity CU is
+entity CUPlus is
 		port (
 		  clk, ExternalReset, 
 		  Cout, Zout,                                              -- flags
@@ -27,7 +27,7 @@ entity CU is
 
 end entity;
 
-architecture CU_ARCH of CU is 
+architecture CUPlus_ARCH of CUPlus is 
   type state is (reset, fetch, baseExe, shadowExe, halt, PCInc);
 	signal currentState : state := reset;
 	signal nextState : state;
@@ -36,13 +36,13 @@ architecture CU_ARCH of CU is
 	constant nop_P2  : STD_LOGIC_VECTOR(3 downto 0) := "0000";
 	constant hlt_P2  : STD_LOGIC_VECTOR(3 downto 0) := "0001";
 	constant szf_P2  : STD_LOGIC_VECTOR(3 downto 0) := "0010";
-	constant czf_P2  : STD_LOGIC_VECTOR(3 downto 0) := "0011";
+	constant czf_P2  : STD_LOGIC_VECTOR(3 downto 0) := "1100";  -- differnet from the CU component
 	constant scf_P2  : STD_LOGIC_VECTOR(3 downto 0) := "0100";
 	constant ccf_P2  : STD_LOGIC_VECTOR(3 downto 0) := "0101";
 	constant cwp_P2  : STD_LOGIC_VECTOR(3 downto 0) := "0110";
 	
 	-- 0000-P2-I : 16bit
-	constant jpr_P2  : STD_LOGIC_VECTOR(3 downto 0) := "0111";
+	constant jpr_P2  : STD_LOGIC_VECTOR(3 downto 0) := "1101";  -- differnet from the CU component
 	constant brz_P2  : STD_LOGIC_VECTOR(3 downto 0) := "1000";
 	constant brc_P2  : STD_LOGIC_VECTOR(3 downto 0) := "1001";
 	constant awp_P2  : STD_LOGIC_VECTOR(3 downto 0) := "1010";
@@ -53,7 +53,7 @@ architecture CU_ARCH of CU is
 	constant lda_P1  : STD_LOGIC_VECTOR(3 downto 0) := "0010";
 	constant sta_P1  : STD_LOGIC_VECTOR(3 downto 0) := "0011";
 	constant tcm_P1  : STD_LOGIC_VECTOR(3 downto 0) := "0100";
-	constant rnd_P1  : STD_LOGIC_VECTOR(3 downto 0) := "0101";
+	constant xor_P1  : STD_LOGIC_VECTOR(3 downto 0) := "0101";  -- differnet from the CU component
 	constant and_P1  : STD_LOGIC_VECTOR(3 downto 0) := "0110";
 	constant orr_P1  : STD_LOGIC_VECTOR(3 downto 0) := "0111";
 	constant not_P1  : STD_LOGIC_VECTOR(3 downto 0) := "1000";
@@ -70,6 +70,11 @@ architecture CU_ARCH of CU is
 	constant mih_P22 : STD_LOGIC_VECTOR(1 downto 0) := "01";
 	constant spc_P22 : STD_LOGIC_VECTOR(1 downto 0) := "10";
 	constant jpa_P22 : STD_LOGIC_VECTOR(1 downto 0) := "11";
+	
+	
+	-- 0000-D-11 : 8bit                                        -- differnet from the CU component
+	-- rnd instruction : ("11" is special in (9 downto 8)bits or (1 downto 0)bits in shadow mode, when the instruction start by 0000) 
+	
 	
 	
 	
@@ -156,60 +161,68 @@ begin
 			  
 			  case IRout(15 downto 12) is
 			    when "0000" =>
-			      case IRout(11 downto 8) is
-			        when nop_P2 =>
-			          nextState <= shadowExe;
-			        when hlt_P2 =>
-			          nextState <= halt;
-			        when szf_P2 =>
-			          ZSet <= '1';
-			          nextState <= shadowExe;
-			        when czf_P2 =>
-			          ZReset <= '1';
-			          nextState <= shadowExe;
-			        when scf_P2 =>
-			          CSet <= '1';
-			          nextState <= shadowExe;
-			        when ccf_P2 =>
-			          CReset <= '1';
-			          nextState <= shadowExe;
-			        when cwp_P2 =>
-			          WPreset <= '1';
-			          nextState <= shadowExe;
-			        when jpr_P2 =>  -- 16bit
-			          PCplusI <= '1';
-			          EnablePC <= '1';
-			          nextState <= fetch;
-			        when brz_P2 =>  -- 16bit
-			          if(Zout = '1') then
+			      if IRout(9 downto 8) = "11" then -- rnd instruction
+			        rand <= '1';
+			        ALUout_on_DataBus <= '1';
+			        RFLwrite <= '1';
+			        RFHwrite <= '1';
+			        nextState <= shadowExe;
+			        
+			      else
+			        case IRout(11 downto 8) is
+			          when nop_P2 =>
+			            nextState <= shadowExe;
+			          when hlt_P2 =>
+			            nextState <= halt;
+			          when szf_P2 =>
+			            ZSet <= '1';
+			            nextState <= shadowExe;
+			          when czf_P2 =>
+			            ZReset <= '1';
+			            nextState <= shadowExe;
+			          when scf_P2 =>
+			            CSet <= '1';
+			            nextState <= shadowExe;
+			          when ccf_P2 =>
+			            CReset <= '1';
+			            nextState <= shadowExe;
+			          when cwp_P2 =>
+			            WPreset <= '1';
+			            nextState <= shadowExe;
+			          when jpr_P2 =>  -- 16bit
 			            PCplusI <= '1';
 			            EnablePC <= '1';
-			          else
+			            nextState <= fetch;
+			          when brz_P2 =>  -- 16bit
+			            if(Zout = '1') then
+			              PCplusI <= '1';
+			              EnablePC <= '1';
+			            else
+			              PCplus1 <= '1';
+			              EnablePC <= '1';
+			            end if;
+			          
+			            nextState <= fetch;
+			          when brc_P2 =>  -- 16bit
+			            if(Cout = '1') then
+			              PCplusI <= '1';
+			              EnablePC <= '1';
+			            else
+			              PCplus1 <= '1';
+			              EnablePC <= '1';
+			            end if;
+			          
+			            nextState <= fetch;
+			          when awp_P2 =>  -- 16bit
+			            WPadd <= '1';
 			            PCplus1 <= '1';
 			            EnablePC <= '1';
-			          end if;
+			            nextState <= fetch;
 			          
-			          nextState <= fetch;
-			        when brc_P2 =>  -- 16bit
-			          if(Cout = '1') then
-			            PCplusI <= '1';
-			            EnablePC <= '1';
-			          else
-			            PCplus1 <= '1';
-			            EnablePC <= '1';
-			          end if;
-			          
-			          nextState <= fetch;
-			        when awp_P2 =>  -- 16bit
-			          WPadd <= '1';
-			          PCplus1 <= '1';
-			          EnablePC <= '1';
-			          nextState <= fetch;
-			          
-			        when OTHERS =>
-			          nextState <= halt;
-			      end case;
-			      
+			          when OTHERS =>
+			            nextState <= halt;
+			        end case;
+			      end if;
 			    when "1111" =>
 			      case IRout(9 downto 8) is
 			        when mil_P22 =>  -- 16bit
@@ -263,8 +276,8 @@ begin
 			      RFLwrite <= '1';
 			      RFHwrite <= '1';
 			      nextState <= shadowExe;
-			    when rnd_P1 =>
-			      rand <= '1';
+			    when xor_P1 =>
+			      AxorB <= '1';
 			      ALUout_on_DataBus <= '1';
 			      RFLwrite <= '1';
 			      RFHwrite <= '1';
@@ -333,42 +346,53 @@ begin
 			  
 			  case IRout(7 downto 4) is
 			    when "0000" =>
-			      case IRout(3 downto 0) is
-			        when nop_P2 =>
-			          PCplus1 <= '1';
-			          EnablePC <= '1';
-			          nextState <= fetch;
-			        when hlt_P2 =>
-			          nextState <= halt;
-			        when szf_P2 =>
-			          ZSet <= '1';
-			          PCplus1 <= '1';
-			          EnablePC <= '1';
-			          nextState <= fetch;
-			        when czf_P2 =>
-			          ZReset <= '1';
-			          PCplus1 <= '1';
-			          EnablePC <= '1';
-			          nextState <= fetch;
-			        when scf_P2 =>
-			          CSet <= '1';
-			          PCplus1 <= '1';
-			          EnablePC <= '1';
-			          nextState <= fetch;
-			        when ccf_P2 =>
-			          CReset <= '1';
-			          PCplus1 <= '1';
-			          EnablePC <= '1';
-			          nextState <= fetch;
-			        when cwp_P2 =>
-			          WPreset <= '1';
-			          PCplus1 <= '1';
-			          EnablePC <= '1';
-			          nextState <= fetch;
+			      if IRout(1 downto 0) = "11" then -- rnd instruction
+			        rand <= '1';
+			        ALUout_on_DataBus <= '1';
+			        RFLwrite <= '1';
+			        RFHwrite <= '1';
+			        PCplus1 <= '1';
+			        EnablePC <= '1';
+			        nextState <= fetch;
+			        
+			      else
+			        case IRout(3 downto 0) is
+			          when nop_P2 =>
+			            PCplus1 <= '1';
+			            EnablePC <= '1';
+			            nextState <= fetch;
+			          when hlt_P2 =>
+			            nextState <= halt;
+			          when szf_P2 =>
+			            ZSet <= '1';
+			            PCplus1 <= '1';
+			            EnablePC <= '1';
+			            nextState <= fetch;
+			          when czf_P2 =>
+			            ZReset <= '1';
+			            PCplus1 <= '1';
+			            EnablePC <= '1';
+			            nextState <= fetch;
+			          when scf_P2 =>
+			            CSet <= '1';
+			            PCplus1 <= '1';
+			            EnablePC <= '1';
+			            nextState <= fetch;
+			          when ccf_P2 =>
+			            CReset <= '1';
+			            PCplus1 <= '1';
+			            EnablePC <= '1';
+			            nextState <= fetch;
+			          when cwp_P2 =>
+			            WPreset <= '1';
+			            PCplus1 <= '1';
+			            EnablePC <= '1';
+			            nextState <= fetch;
 			          
-			        when OTHERS =>
-			          nextState <= halt;
-			      end case;
+			          when OTHERS =>
+			            nextState <= halt;
+			        end case;
+			      end if;
 			      
 			        
 			    when mvr_P1 =>
@@ -401,8 +425,8 @@ begin
 			      PCplus1 <= '1';
 			      EnablePC <= '1';
 			      nextState <= fetch;
-			    when rnd_P1 =>
-			      rand <= '1';
+			    when xor_P1 =>
+			      AxorB <= '1';
 			      ALUout_on_DataBus <= '1';
 			      RFLwrite <= '1';
 			      RFHwrite <= '1';
